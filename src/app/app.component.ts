@@ -20,7 +20,9 @@ export class AppComponent {
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.authService.autoLogin();
     this.userSub = this.authService.user.subscribe((user) => {
+      console.log(!!user);
       this.isAuthenticated = !!user;
     });
   }
