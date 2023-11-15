@@ -1,6 +1,15 @@
+<nav class="bg-gray-800 p-4">
+  <div class="container mx-auto flex justify-between items-center">
+      <div class="text-slate-100 text-lg cursor-pointer" routerLink="">
+          <!-- Toolbar Title or Logo -->
+          Vital Quiz
+      </div>
+      <button class="bg-red-400 hover:bg-red-700 text-white text-sm font-bold py-1.5 px-2 rounded">
+          Logout
+      </button>
+  </div>
+</nav>
+
 <div class="bg-[#f4faff] text-center">
-  <h1 class="text-4xl text-center p-6 text-slate-600" routerLink="" style="cursor: pointer;">
-    Vital Quiz
-  </h1>
   <router-outlet></router-outlet>
 </div>

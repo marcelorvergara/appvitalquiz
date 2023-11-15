@@ -1,9 +1,6 @@
-<div *ngIf="!isAuthenticated">
-  <app-auth></app-auth>
-</div>
 <button class="p-8" routerLink="/patient-area">
   <img src="assets/paciente.png" alt="entrada do paciente">
 </button>
-<button class="p-8" routerLink="/doctor-area" *ngIf="!isAuthenticated">
+<button class="p-8" routerLink="/doctor-area">
   <img src="assets/doutor.png" alt="entrada do doutor">
 </button>
