@@ -7,7 +7,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from './auth.service';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard {
@@ -15,6 +15,7 @@ export class AuthGuard {
 
   canActivate() {
     return this.authService.user.pipe(
+      take(1),
       map((user) => {
         const isAuth = !!user;
         if (isAuth) {
