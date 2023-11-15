@@ -15,22 +15,19 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
   title = 'vital-quiz';
   isAuthenticated = false;
-  private userSub: Subscription | undefined;
+  private userSub: Subscription = new Subscription();
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.authService.autoLogin();
     this.userSub = this.authService.user.subscribe((user) => {
-      console.log(!!user);
       this.isAuthenticated = !!user;
     });
+    this.authService.autoLogin();
   }
 
   ngOnDestroy(): void {
-    if (this.userSub) {
-      this.userSub.unsubscribe();
-    }
+    this.userSub.unsubscribe();
   }
 
   logOutUser() {
