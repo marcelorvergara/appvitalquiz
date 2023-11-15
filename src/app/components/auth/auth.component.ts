@@ -42,7 +42,6 @@ export class AuthComponent {
 
     authObs.subscribe({
       next: (responseData) => {
-        console.log('Response Data', responseData);
         this.router.navigate(['/']);
       },
       error: (errorMessage) => {
@@ -51,7 +50,6 @@ export class AuthComponent {
         this.isLoading = false;
       },
       complete: () => {
-        console.info('Complete');
         this.isLoading = false;
         this.error = null;
       },

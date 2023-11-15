@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { canActivateRoute } from './components/auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,6 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'doctor-area',
+    canActivate: [canActivateRoute],
     loadComponent: () =>
       import('./pages/doctor/doctor.component').then(
         (mod) => mod.DoctorComponent
