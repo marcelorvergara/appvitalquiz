@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-doctor',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './doctor.component.html',
   styleUrl: './doctor.component.css',
 })

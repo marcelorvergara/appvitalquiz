@@ -14,11 +14,27 @@ export const routes: Routes = [
   },
   {
     path: 'doctor-area',
-    canActivate: [canActivateRoute],
     loadComponent: () =>
       import('./pages/doctor/doctor.component').then(
         (mod) => mod.DoctorComponent
       ),
+    canActivate: [canActivateRoute],
+    children: [
+      {
+        path: 'patient-registry',
+        loadComponent: () =>
+          import(
+            './components/cadastra-paciente/cadastra-paciente.component'
+          ).then((mod) => mod.CadastraPacienteComponent),
+      },
+      {
+        path: 'patients-list',
+        loadComponent: () =>
+          import('./components/patients-list/patients-list.component').then(
+            (mod) => mod.PatientsListComponent
+          ),
+      },
+    ],
   },
   {
     path: 'auth',
