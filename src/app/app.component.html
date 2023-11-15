@@ -4,7 +4,7 @@
           <!-- Toolbar Title or Logo -->
           Vital Quiz
       </div>
-      <button class="bg-red-400 hover:bg-red-700 text-white text-sm font-bold py-1.5 px-2 rounded">
+      <button class="bg-red-400 hover:bg-red-700 text-white text-sm font-bold py-1.5 px-2 rounded" (click)="logOutUser()" *ngIf="isAuthenticated">
           Logout
       </button>
   </div>
