@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environmets';
-import { Patient } from './models/patient.model';
+import { Patient, Patients } from './models/patient.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +20,10 @@ export class DataStorageService {
         fields: this.convertToFirestoreFormat(data),
       }
     );
+  }
+
+  fetchPatients() {
+    return this.http.get<Patients>(this.url);
   }
 
   private convertToFirestoreFormat(data: any) {

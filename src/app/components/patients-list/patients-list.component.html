@@ -1,1 +1,5 @@
-<p>patients-list works!</p>
+@for (patient of patientList; track patient.fields.nome) {
+  <li> {{ patient.fields.nome.stringValue }} </li>
+} @empty {
+  <li> Nenhum paciente cadastrado</li>
+}
