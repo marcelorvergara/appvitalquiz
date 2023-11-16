@@ -23,8 +23,8 @@
         <input type="password" name="password" ngModel required minlength="6" class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none">
       </div>
       <div class="text-right mt-3 flex">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded mr-2" type="submit" [disabled]="!authForm.valid">{{ isLoginMode ? 'Login' : 'Cadastre-se' }}</button>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-4 rounded" type="button" (click)="onSwitchMode()">Troque para {{ isLoginMode ? 'cadastre-se' : 'se logar'}}</button>
+        <button class="btn-custom mr-2" type="submit" [disabled]="!authForm.valid">{{ isLoginMode ? 'Login' : 'Cadastre-se' }}</button>
+        <button class="btn-custom" type="button" (click)="onSwitchMode()">Troque para {{ isLoginMode ? 'cadastre-se' : 'se logar'}}</button>
       </div>
     </form>
 
