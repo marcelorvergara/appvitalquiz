@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { canActivateRoute } from './components/auth/auth.guard';
+import { PatientsListComponent } from './components/patients-list/patients-list.component';
+import { CadastraPacienteComponent } from './components/cadastra-paciente/cadastra-paciente.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,18 +23,12 @@ export const routes: Routes = [
     canActivate: [canActivateRoute],
     children: [
       {
-        path: 'patient-registry',
-        loadComponent: () =>
-          import(
-            './components/cadastra-paciente/cadastra-paciente.component'
-          ).then((mod) => mod.CadastraPacienteComponent),
+        path: 'patients-list',
+        component: PatientsListComponent,
       },
       {
-        path: 'patients-list',
-        loadComponent: () =>
-          import('./components/patients-list/patients-list.component').then(
-            (mod) => mod.PatientsListComponent
-          ),
+        path: 'patient-registry',
+        component: CadastraPacienteComponent,
       },
     ],
   },

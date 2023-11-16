@@ -1,0 +1,9 @@
+.active {
+  background-color: #d6d3d1;
+  :focus {
+    outline: none;
+  }
+  :focus {
+    box-shadow: 0 0 0 3px rgba(214, 211, 209, 0.5);
+  }
+}
