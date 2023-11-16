@@ -18,7 +18,9 @@ export class CadastraPacienteComponent {
   constructor(private dataSotrageService: DataStorageService) {}
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
-    this.dataSotrageService.createPatient(form.value).subscribe();
+    this.isLoading = true;
+    this.dataSotrageService.createPatient(form.value).subscribe(() => {
+      this.isLoading = false;
+    });
   }
 }

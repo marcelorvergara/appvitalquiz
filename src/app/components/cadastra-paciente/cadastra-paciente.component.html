@@ -19,3 +19,8 @@
         <button class="btn-custom-actv" type="submit">Cadastrar</button>
       </div>
     </form>
+
+    <!-- loading spinning -->
+    <div class="text-center mt-12" *ngIf="isLoading">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
