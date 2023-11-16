@@ -1,6 +1,7 @@
 import {
   HttpEvent,
   HttpHandler,
+  HttpHeaders,
   HttpInterceptor,
   HttpParams,
   HttpRequest,
@@ -21,8 +22,15 @@ export class AuthInterceptorService implements HttpInterceptor {
       take(1),
       exhaustMap((user) => {
         if (user?.token) {
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + user?.token,
+          });
+          // const modifiedReq = req.clone({
+          //   params: new HttpParams().set('auth', user?.token),
+          // });
           const modifiedReq = req.clone({
-            params: new HttpParams().set('auth', user?.token),
+            headers: headers,
           });
           return next.handle(modifiedReq);
         }
