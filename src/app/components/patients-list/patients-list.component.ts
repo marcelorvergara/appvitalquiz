@@ -17,7 +17,6 @@ export class PatientsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataStorageService.fetchPatients().subscribe((patients) => {
-      console.log(patients);
       this.patientList = patients.documents;
     });
   }

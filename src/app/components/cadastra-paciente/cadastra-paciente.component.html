@@ -1,5 +1,5 @@
     <!-- form -->
-    <form class="p-4 text-left" #patientForm="ngForm" (ngSubmit)="onSubmit(patientForm)" *ngIf="!isLoading">
+    <form class="p-4 text-left sm:w-4/12 mx-auto" #patientForm="ngForm" (ngSubmit)="onSubmit(patientForm)" *ngIf="!isLoading">
       <div class="flex flex-col">
         <label for="nome">Nome:</label>
         <input type="text" name="nome" ngModel required
