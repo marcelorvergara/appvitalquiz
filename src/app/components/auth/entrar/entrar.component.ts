@@ -37,7 +37,7 @@ export class EntrarComponent {
 
     this.authService.login(email, password).subscribe({
       next: (responseData) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/doctor-area/patients-list']);
       },
       error: (errorMessage) => {
         console.error('Error', errorMessage);
