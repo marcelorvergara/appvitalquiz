@@ -8,8 +8,8 @@ import { ErrorAlertBoxComponent } from '../../shared/error-alert-box/error-alert
 @Component({
   selector: 'app-cadastra-paciente',
   standalone: true,
-  templateUrl: './cadastra-paciente.component.html',
-  styleUrl: './cadastra-paciente.component.css',
+  templateUrl: './patient-register.component.html',
+  styleUrl: './patient-register.component.css',
   imports: [
     CommonModule,
     FormsModule,
@@ -17,7 +17,7 @@ import { ErrorAlertBoxComponent } from '../../shared/error-alert-box/error-alert
     ErrorAlertBoxComponent,
   ],
 })
-export class CadastraPacienteComponent {
+export class PatientRegisterComponent {
   isLoading = false;
   error = '';
 

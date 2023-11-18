@@ -3,15 +3,14 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService, AuthResponseData } from '../auth.service';
+import { AuthService } from '../auth.service';
 import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-alert-box.component';
 
 @Component({
   selector: 'app-entrar',
   standalone: true,
-  templateUrl: './entrar.component.html',
-  styleUrl: './entrar.component.css',
+  templateUrl: './signin.component.html',
+  styleUrl: './signin.component.css',
   imports: [
     CommonModule,
     FormsModule,
@@ -19,7 +18,7 @@ import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-al
     ErrorAlertBoxComponent,
   ],
 })
-export class EntrarComponent {
+export class SigninComponent {
   isLoading = false;
 
   error = '';

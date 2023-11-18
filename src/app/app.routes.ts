@@ -3,8 +3,8 @@ import { HomeComponent } from './pages/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { canActivateRoute } from './components/auth/auth.guard';
 import { PatientsListComponent } from './components/patients-list/patients-list.component';
-import { CadastraPacienteComponent } from './components/cadastra-paciente/cadastra-paciente.component';
-import { EntrarComponent } from './components/auth/entrar/entrar.component';
+import { PatientRegisterComponent } from './components/patient-register/patient-register.component';
+import { SigninComponent } from './components/auth/login/signin.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 
 export const routes: Routes = [
@@ -30,7 +30,7 @@ export const routes: Routes = [
       },
       {
         path: 'patient-registry',
-        component: CadastraPacienteComponent,
+        component: PatientRegisterComponent,
       },
     ],
   },
@@ -40,7 +40,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'signin',
-        component: EntrarComponent,
+        component: SigninComponent,
       },
       {
         path: 'signup',
