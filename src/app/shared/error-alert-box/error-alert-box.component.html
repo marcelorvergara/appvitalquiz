@@ -1,0 +1,11 @@
+    <!-- error alert box -->
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-2" role="alert" *ngIf="errorMessage">
+      <strong class="font-bold mr-2">Oops!</strong>
+      <span class="block sm:inline">{{ errorMessage }}</span>
+      <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" (click)="onCloseAlert()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      </span>
+    </div>

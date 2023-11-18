@@ -4,6 +4,8 @@ import { AuthComponent } from './components/auth/auth.component';
 import { canActivateRoute } from './components/auth/auth.guard';
 import { PatientsListComponent } from './components/patients-list/patients-list.component';
 import { CadastraPacienteComponent } from './components/cadastra-paciente/cadastra-paciente.component';
+import { EntrarComponent } from './components/auth/entrar/entrar.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -35,5 +37,15 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
+    children: [
+      {
+        path: 'signin',
+        component: EntrarComponent,
+      },
+      {
+        path: 'signup',
+        component: SignupComponent,
+      },
+    ],
   },
 ];
