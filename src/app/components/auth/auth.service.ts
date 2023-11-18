@@ -92,19 +92,6 @@ export class AuthService {
     }
   }
 
-  private handleAuthentication(
-    email: string,
-    userId: string,
-    token: string,
-    expiresIn: number
-  ) {
-    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-    const user = new User(email, userId, token, expirationDate);
-    this.user.next(user);
-    this.autoLogout(expiresIn * 1000);
-    localStorage.setItem('userData', JSON.stringify(user));
-  }
-
   autoLogout(expirationDuration: number) {
     // Timer for token
     this.tokenExpirationTimer = setTimeout(
@@ -121,6 +108,41 @@ export class AuthService {
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
+  }
+
+  getUserData() {
+    const userData: {
+      email: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData') || '');
+
+    if (!userData._token) {
+      return;
+    }
+    return this.http
+      .post<any>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' +
+          environment.apiKey,
+        {
+          idToken: userData._token,
+        }
+      )
+      .pipe(catchError((errorResp) => this.handleError(errorResp)));
+  }
+
+  private handleAuthentication(
+    email: string,
+    userId: string,
+    token: string,
+    expiresIn: number
+  ) {
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, userId, token, expirationDate);
+    this.user.next(user);
+    this.autoLogout(expiresIn * 1000);
+    localStorage.setItem('userData', JSON.stringify(user));
   }
 
   private handleError(errorResp: HttpErrorResponse) {
