@@ -6,13 +6,13 @@
   </div>
 
   <!-- Input range -->
-  <form>
+  <form #quizForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="grid grid-cols-2 m-4 gap-2 justify-items-stretch">
       @for(item of answers; track item; let idx = $index) {
         <div class="text-left">{{ item }}</div>
         <div class="text-right">
           <label [for]="idx" class="mr-3">{{ smileEmojis[idx] }}</label>
-          <input type="radio" name="answer" [id]="idx" [value]="idx">
+          <input type="radio" name="answer" [id]="idx" [value]="idx" [(ngModel)]="answer">
         </div>
       }
     </div>
@@ -20,11 +20,11 @@
     <!-- Navigation buttons -->
     <div class="p-4 flex justify-between mt-16">
       <div>
-        <button type="button" class="btn-custom-actv" (click)="decrement()" *ngIf="questionNum() > 0 && questionNum() < 12">Voltar</button>
+        <button type="button" class="btn-custom-actv" (click)="decrement(quizForm)" *ngIf="questionNum() > 0 && questionNum() < 12">Voltar</button>
       </div>
       <div>
-        <button type="button" class="btn-custom-actv" (click)="increment()" *ngIf="questionNum() < 11">Próxima</button>
-        <button type="submit" class="btn-custom-actv" (click)="increment()" *ngIf="questionNum() === 11">Finalizar</button>
+        <button type="button" class="btn-custom-actv" (click)="increment(quizForm)" *ngIf="questionNum() < 11">Próxima</button>
+        <button type="submit" class="btn-custom-actv" *ngIf="questionNum() === 11">Finalizar</button>
       </div>
     </div>
   </form>
