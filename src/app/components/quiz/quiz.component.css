@@ -1,0 +1,8 @@
+.form-radio {
+  /* Custom styles if needed */
+}
+.form-radio:checked {
+  /* Custom styles for the checked state */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23007BFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg>');
+  border-color: transparent;
+}
