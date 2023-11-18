@@ -26,7 +26,7 @@ export class DataStorageService {
           '-' +
           drUserId +
           '?documentId=' +
-          data.nome.replace(' ', '_'),
+          data.nome.replaceAll(' ', '_'),
         {
           fields: this.convertToFirestoreFormat(data),
         }
