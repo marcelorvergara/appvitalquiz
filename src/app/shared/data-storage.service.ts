@@ -56,8 +56,14 @@ export class DataStorageService {
     }
     return throwError(() => errorMessage);
   }
+
   fetchPatients() {
-    return this.http.get<Patients>(this.url);
+    // TODO: Improve sec getUserData
+    const drUserId = this.authService.getUserData();
+
+    return this.http.get<Patients>(
+      this.url + this.collectionPath + '-' + drUserId
+    );
   }
 
   private convertToFirestoreFormat(data: any) {
