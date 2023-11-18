@@ -11,18 +11,26 @@ import { catchError, throwError } from 'rxjs';
 export class DataStorageService {
   private databaseId = '(default)';
   private collectionPath = 'patients';
-  private url = `https://firestore.googleapis.com/v1/projects/${environment.projectId}/databases/${this.databaseId}/documents/${this.collectionPath}`;
+  private url = `https://firestore.googleapis.com/v1/projects/${environment.projectId}/databases/${this.databaseId}/documents/`;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   createPatient(data: Patient) {
-    this.authService
-      .getUserData()
-      ?.subscribe((userData) => console.log(userData));
+    // TODO: Improve sec getUserData
+    const drUserId = this.authService.getUserData();
+
     return this.http
-      .post(this.url + '?documentId=' + data.nome.replace(' ', '_'), {
-        fields: this.convertToFirestoreFormat(data),
-      })
+      .post(
+        this.url +
+          this.collectionPath +
+          '-' +
+          drUserId +
+          '?documentId=' +
+          data.nome.replace(' ', '_'),
+        {
+          fields: this.convertToFirestoreFormat(data),
+        }
+      )
       .pipe(catchError((errorResp) => this.handleError(errorResp)));
   }
 

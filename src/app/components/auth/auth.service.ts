@@ -118,18 +118,10 @@ export class AuthService {
       _tokenExpirationDate: string;
     } = JSON.parse(localStorage.getItem('userData') || '');
 
-    if (!userData._token) {
+    if (!userData.id) {
       return;
     }
-    return this.http
-      .post<any>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' +
-          environment.apiKey,
-        {
-          idToken: userData._token,
-        }
-      )
-      .pipe(catchError((errorResp) => this.handleError(errorResp)));
+    return userData.id;
   }
 
   private handleAuthentication(
