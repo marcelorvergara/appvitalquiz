@@ -35,14 +35,22 @@ import { DataStorageService } from '../../shared/data-storage.service';
 })
 export class QuizComponent implements OnInit {
   questions: string[] = [];
-  answers: string[] = [];
-  smileEmojis = ['😄', '😊', '😐', '😔', '😩'];
+  answerOption: string[] = [];
+  smileEmojis = [
+    { emoji: '😄', selected: false },
+    { emoji: '😊', selected: false },
+    { emoji: '😐', selected: false },
+    { emoji: '😔', selected: false },
+    { emoji: '😩', selected: false },
+  ];
   questionNum = signal(0);
-  answer: string = '';
   // Animation
   isOpen = true;
   // Detached or doctor test (quiz)
   patientName = '';
+  // Selected answaers by patient
+  answer: number = 0;
+  answersList: number[] = [];
 
   constructor(
     private quizService: QuizService,
@@ -56,7 +64,7 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.questions = this.quizService.getQuestions();
-    this.answers = this.quizService.getAnswers();
+    this.answerOption = this.quizService.getAnswers();
 
     // Check url for the test requester, doc id and uuid of the test
     if (this.route.firstChild) {
@@ -65,18 +73,11 @@ export class QuizComponent implements OnInit {
         const patient = params['patient'];
         const testId = params['testId'];
 
-        // Perform actions with the parameters here
-        console.log(
-          `Requester: ${requester}, Patient: ${patient}, Test ID: ${testId}`
-        );
-
         // Chech in the repo if there is test
         this.dataStorageService
           .checkUUID(requester, patient, testId)
           .subscribe((respData) => {
-            if (respData.fields.test_number?.stringValue !== testId) {
-              this.patientName = '';
-            } else {
+            if (respData.fields.test_number?.stringValue === testId) {
               this.patientName = respData.fields.nome.stringValue.replaceAll(
                 '_',
                 ' '
@@ -88,16 +89,23 @@ export class QuizComponent implements OnInit {
   }
 
   increment(quizForm: NgForm) {
-    console.log(this.questionNum(), quizForm.value.answer);
+    console.log(quizForm.value);
+    this.answersList.push(this.answer);
     this.questionNum.update((question) => question + 1);
+    // Animate the questions changing
     this.isOpen = !this.isOpen;
   }
 
   decrement(quizForm: NgForm) {
     this.questionNum.update((question) => question - 1);
-    console.log(this.questionNum());
+    this.answer = this.answersList.pop() || 0;
+
+    // Animate the questions changing
     this.isOpen = !this.isOpen;
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.answersList.push(this.answer);
+    console.log(this.answersList);
+  }
 }

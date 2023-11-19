@@ -16,11 +16,11 @@
   <!-- Input range -->
   <form #quizForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="grid grid-cols-2 m-4 gap-2">
-      @for(item of answers; track item; let idx = $index) {
+      @for(item of answerOption; track item; let idx = $index) {
         <div class="text-left flex items-end">{{ item }}</div>
         <div class="text-right">
-          <label [for]="idx" class="mr-3 text-3xl">{{ smileEmojis[idx] }}</label>
-          <input type="radio" name="answer" [id]="idx" [value]="idx" [(ngModel)]="answer" class="form-radio h-5 w-5 text-blue-600">
+          <label [for]="idx" class="mr-3 text-3xl">{{ smileEmojis[idx].emoji }}</label>
+          <input type="radio" name={{questionNum()}} value={{idx}} [checked]="smileEmojis[idx].selected" [(ngModel)]="answer" class="form-radio h-5 w-5 text-blue-600">
         </div>
       }
     </div>
