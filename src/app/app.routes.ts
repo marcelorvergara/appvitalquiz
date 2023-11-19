@@ -6,15 +6,20 @@ import { PatientsListComponent } from './components/patients/patients-list/patie
 import { PatientRegisterComponent } from './components/patients/patient-register/patient-register.component';
 import { SigninComponent } from './components/auth/login/signin.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
+import { PatientComponent } from './pages/patient/patient.component';
+import { QuizComponent } from './components/quiz-patient/quiz.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'patient-area',
-    loadComponent: () =>
-      import('./pages/patient/patient.component').then(
-        (mod) => mod.PatientComponent
-      ),
+    component: PatientComponent,
+    children: [
+      {
+        path: ':requester/:patient/:testId',
+        component: QuizComponent,
+      },
+    ],
   },
   {
     path: 'doctor-area',

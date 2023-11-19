@@ -19,6 +19,7 @@ interface Fields {
   phone: Phone;
   nome: Nome;
   email: Email;
+  test_number?: TestNumber;
 }
 
 interface Phone {
@@ -30,5 +31,9 @@ interface Nome {
 }
 
 interface Email {
+  stringValue: string;
+}
+
+interface TestNumber {
   stringValue: string;
 }

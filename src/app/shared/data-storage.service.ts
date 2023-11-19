@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environmets';
-import { Patient, Patients } from './models/patient.model';
+import { Patient, Patients, PatientsDoc } from './models/patient.model';
 import { AuthService } from '../components/auth/auth.service';
 import { catchError, throwError } from 'rxjs';
 
@@ -59,6 +59,12 @@ export class DataStorageService {
         docId +
         '?currentDocument.exists=true&updateMask.fieldPaths=test_number&alt=json',
       { fields: newTest }
+    );
+  }
+
+  checkUUID(requester: string, patient: string, testId: string) {
+    return this.http.get<PatientsDoc>(
+      this.url + this.collectionPath + '-' + requester + '/' + patient
     );
   }
 

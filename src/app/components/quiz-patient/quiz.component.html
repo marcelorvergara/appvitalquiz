@@ -1,6 +1,14 @@
 <div class="sm:w-4/12 mx-auto">
+  <!-- Banner -->
+  @if(patientName) {
+    <h1 class="text-2xl font-bold text-gray-800 p-2 bg-stone-200">{{ patientName }}</h1>
+  } @else {
+    <h1 class="text-xl font-bold text-gray-800 p-2 bg-stone-200">Teste avulso.</h1>
+    <h1 class="font-bold text-gray-800 p-2 bg-stone-200"> Sem efeitos para registro de evolução do tratamento.</h1>
+  }
+
   <!-- Questions -->
-  <div class="p-8" [@fadeInOut]="isOpen ? 'open': 'closed' ">
+  <div class="p-4" [@fadeInOut]="isOpen ? 'open': 'closed' ">
     <p>Pergunta {{ questionNum() + 1 }} de {{ questions.length }}</p>
     <app-quiz-questions [question]="questions[questionNum()]"></app-quiz-questions>
   </div>

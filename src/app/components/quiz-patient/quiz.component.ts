@@ -1,7 +1,6 @@
 import { Component, OnInit, effect, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { QuizService } from './quiz.service';
-import { QuizQuestionsComponent } from './quiz-questions/quiz-questions.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import {
   animate,
@@ -10,11 +9,14 @@ import {
   trigger,
   state,
 } from '@angular/animations';
+import { ActivatedRoute, Params, RouterModule } from '@angular/router';
+import { QuizQuestionsComponent } from './quiz-questions/quiz-questions.component';
+import { DataStorageService } from '../../shared/data-storage.service';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule, QuizQuestionsComponent, FormsModule],
+  imports: [CommonModule, QuizQuestionsComponent, FormsModule, RouterModule],
   templateUrl: './quiz.component.html',
   styleUrl: './quiz.component.css',
   animations: [
@@ -37,9 +39,16 @@ export class QuizComponent implements OnInit {
   smileEmojis = ['😄', '😊', '😐', '😔', '😩'];
   questionNum = signal(0);
   answer: string = '';
+  // Animation
   isOpen = true;
+  // Detached or doctor test (quiz)
+  patientName = '';
 
-  constructor(private quizService: QuizService) {
+  constructor(
+    private quizService: QuizService,
+    private route: ActivatedRoute,
+    private dataStorageService: DataStorageService
+  ) {
     effect(() => {
       this.isOpen = !this.isOpen;
     });
@@ -48,6 +57,34 @@ export class QuizComponent implements OnInit {
   ngOnInit(): void {
     this.questions = this.quizService.getQuestions();
     this.answers = this.quizService.getAnswers();
+
+    // Check url for the test requester, doc id and uuid of the test
+    if (this.route.firstChild) {
+      this.route.firstChild.params.subscribe((params: Params) => {
+        const requester = params['requester'];
+        const patient = params['patient'];
+        const testId = params['testId'];
+
+        // Perform actions with the parameters here
+        console.log(
+          `Requester: ${requester}, Patient: ${patient}, Test ID: ${testId}`
+        );
+
+        // Chech in the repo if there is test
+        this.dataStorageService
+          .checkUUID(requester, patient, testId)
+          .subscribe((respData) => {
+            if (respData.fields.test_number?.stringValue !== testId) {
+              this.patientName = '';
+            } else {
+              this.patientName = respData.fields.nome.stringValue.replaceAll(
+                '_',
+                ' '
+              );
+            }
+          });
+      });
+    }
   }
 
   increment(quizForm: NgForm) {

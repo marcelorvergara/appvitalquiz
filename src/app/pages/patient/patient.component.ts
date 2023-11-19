@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { QuizComponent } from '../../components/quiz/quiz.component';
+import { QuizComponent } from '../../components/quiz-patient/quiz.component';
 
 @Component({
   selector: 'app-patient',
