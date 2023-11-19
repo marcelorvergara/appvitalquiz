@@ -1,6 +1,6 @@
 <div class="sm:w-4/12 mx-auto">
   <!-- Questions -->
-  <div class="p-8">
+  <div class="p-8" [@fadeInOut]="isOpen ? 'open': 'closed' ">
     <p>Pergunta {{ questionNum() + 1 }} de {{ questions.length }}</p>
     <app-quiz-questions [question]="questions[questionNum()]"></app-quiz-questions>
   </div>
