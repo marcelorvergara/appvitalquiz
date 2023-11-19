@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { canActivateRoute } from './components/auth/auth.guard';
-import { PatientsListComponent } from './components/patients-list/patients-list.component';
-import { PatientRegisterComponent } from './components/patient-register/patient-register.component';
+import { PatientsListComponent } from './components/patients/patients-list/patients-list.component';
+import { PatientRegisterComponent } from './components/patients/patient-register/patient-register.component';
 import { SigninComponent } from './components/auth/login/signin.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 

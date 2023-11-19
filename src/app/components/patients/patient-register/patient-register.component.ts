@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { DataStorageService } from '../../shared/data-storage.service';
-import { ErrorAlertBoxComponent } from '../../shared/error-alert-box/error-alert-box.component';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { DataStorageService } from '../../../shared/data-storage.service';
+import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-alert-box.component';
 
 @Component({
   selector: 'app-cadastra-paciente',

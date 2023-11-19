@@ -34,6 +34,34 @@ export class DataStorageService {
       .pipe(catchError((errorResp) => this.handleError(errorResp)));
   }
 
+  fetchPatients() {
+    // TODO: Improve sec getUserData
+    const drUserId = this.authService.getUserData();
+
+    return this.http.get<Patients>(
+      this.url + this.collectionPath + '-' + drUserId
+    );
+  }
+
+  // Updatate paticent record with the test number
+  patchPaticent(collectionId: string, docId: string, testId: string) {
+    const newTest = {
+      test_number: {
+        stringValue: testId,
+      },
+    };
+    return this.http.patch(
+      this.url +
+        this.collectionPath +
+        '-' +
+        collectionId +
+        '/' +
+        docId +
+        '?currentDocument.exists=true&updateMask.fieldPaths=test_number&alt=json',
+      { fields: newTest }
+    );
+  }
+
   handleError(errorResp: HttpErrorResponse) {
     let errorMessage = 'Um erro desconhecido ocorreu...';
     if (!errorResp.error || !errorResp.error.error) {
@@ -55,15 +83,6 @@ export class DataStorageService {
         errorMessage = 'Erro desconhecido...';
     }
     return throwError(() => errorMessage);
-  }
-
-  fetchPatients() {
-    // TODO: Improve sec getUserData
-    const drUserId = this.authService.getUserData();
-
-    return this.http.get<Patients>(
-      this.url + this.collectionPath + '-' + drUserId
-    );
   }
 
   private convertToFirestoreFormat(data: any) {
