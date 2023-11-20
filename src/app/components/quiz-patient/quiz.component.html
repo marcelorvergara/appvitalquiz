@@ -1,4 +1,4 @@
-<div class="sm:w-4/12 mx-auto">
+<div class="sm:w-4/12 mx-auto" *ngIf="!finalScore">
   <!-- Banner -->
   @if(patientName) {
     <h1 class="text-2xl font-bold text-gray-800 p-2 bg-stone-200">{{ patientName }}</h1>
@@ -36,4 +36,15 @@
       </div>
     </div>
   </form>
+</div>
+
+<div  *ngIf="finalScore">
+  <div class="p-4 m-4" [ngStyle]="{'background-color' : bgResultColor}">
+    <span class="text-xl">{{ finalScore }}</span>
+  </div>
+  <div class="p-4 flex justify-end mt-16">
+    <div>
+      <button type="button" class="btn-custom-actv" routerLink="">Início</button>
+    </div>
+  </div>
 </div>

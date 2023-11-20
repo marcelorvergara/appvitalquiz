@@ -51,6 +51,9 @@ export class QuizComponent implements OnInit {
   // Selected answaers by patient
   answer: number = 0;
   answersList: number[] = [];
+  // Final rating - results
+  finalScore: string = '';
+  bgResultColor: string = '';
 
   constructor(
     private quizService: QuizService,
@@ -89,8 +92,7 @@ export class QuizComponent implements OnInit {
   }
 
   increment(quizForm: NgForm) {
-    console.log(quizForm.value);
-    this.answersList.push(this.answer);
+    this.answersList.push(Number(this.answer));
     this.questionNum.update((question) => question + 1);
     // Animate the questions changing
     this.isOpen = !this.isOpen;
@@ -105,7 +107,33 @@ export class QuizComponent implements OnInit {
   }
 
   onSubmit() {
-    this.answersList.push(this.answer);
-    console.log(this.answersList);
+    // Last question of the quiz
+    this.answersList.push(Number(this.answer));
+    // Sum result
+    const scoreSum = this.answersList.reduce((acc, currVal) => {
+      return acc + currVal;
+    }, 0);
+    this.finalScore = this.classifyAnxietyLevel(scoreSum);
+  }
+
+  classifyAnxietyLevel(score: number): string {
+    if (score < 12) {
+      this.bgResultColor = '#89CFF0';
+      return 'Ansiedade normal';
+    } else if (score >= 12 && score <= 17) {
+      this.bgResultColor = '#A9DBB8';
+      return 'Sintomatologia leve';
+    } else if (score >= 18 && score <= 24) {
+      this.bgResultColor = '#FFD580';
+      return 'Sintomatologia leve a moderada';
+    } else if (score >= 25 && score <= 30) {
+      this.bgResultColor = '#FFA07A';
+      return 'Sintomatologia moderada a grave';
+    } else if (score >= 21 && score <= 48) {
+      this.bgResultColor = '#C04000';
+      return 'Sintomatologia grave a muito grave';
+    } else {
+      return 'Valor inválido';
+    }
   }
 }
