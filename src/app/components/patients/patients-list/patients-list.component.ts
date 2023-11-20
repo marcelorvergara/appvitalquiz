@@ -32,7 +32,7 @@ export class PatientsListComponent implements OnInit {
     const docId = patient.replaceAll(' ', '_');
     const testId = getUniqueId(1);
     this.dataStorageService
-      .patchPaticent(collectionId, docId, testId)
+      .patchPatient(collectionId, docId, testId)
       .subscribe((respData) => console.log(respData));
   }
 }

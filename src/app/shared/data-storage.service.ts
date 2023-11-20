@@ -44,7 +44,7 @@ export class DataStorageService {
   }
 
   // Updatate paticent record with the test number
-  patchPaticent(collectionId: string, docId: string, testId: string) {
+  patchPatient(collectionId: string, docId: string, testId: string) {
     const newTest = {
       test_number: {
         stringValue: testId,
@@ -59,6 +59,48 @@ export class DataStorageService {
         docId +
         '?currentDocument.exists=true&updateMask.fieldPaths=test_number&alt=json',
       { fields: newTest }
+    );
+  }
+
+  // Update patient record with the test result
+  patchPatientTestResult(
+    collectionId: string,
+    docId: string,
+    dateResultMap: Map<string, number[]>
+  ) {
+    const [dataOfQuizTest] = dateResultMap;
+    console.log(dataOfQuizTest);
+    const resultTestList = dataOfQuizTest[1];
+    const convertedValues = this.convertToFirestoreFormat(resultTestList);
+    const convertedArray = this.convertObjectToArray(convertedValues);
+    return this.http.patch(
+      this.url +
+        this.collectionPath +
+        '-' +
+        collectionId +
+        '/' +
+        docId +
+        '?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=' +
+        dataOfQuizTest[0] +
+        '&alt=json',
+      {
+        fields: {
+          [dataOfQuizTest[0]]: {
+            mapValue: {
+              fields: {
+                resultTest: {
+                  arrayValue: {
+                    values: convertedArray,
+                  },
+                },
+              },
+            },
+          },
+          test_number: {
+            stringValue: '',
+          },
+        },
+      }
     );
   }
 
@@ -101,15 +143,50 @@ export class DataStorageService {
     return convertedData;
   }
 
-  private convertValue(value: any) {
-    if (typeof value === 'string') {
-      return { stringValue: value };
-    } else if (typeof value === 'number') {
-      return { integerValue: value };
-    } else if (typeof value === 'boolean') {
-      return { booleanValue: value };
+  private convertValue(value: any): any {
+    switch (typeof value) {
+      case 'string':
+        return { stringValue: value };
+      case 'number':
+        // Firestore differentiates between integer and double values
+        return Number.isInteger(value)
+          ? { integerValue: value }
+          : { doubleValue: value };
+      case 'boolean':
+        return { booleanValue: value };
+      case 'object':
+        if (value === null) {
+          return { nullValue: null };
+        } else if (Array.isArray(value)) {
+          return { arrayValue: { values: value.map(this.convertValue) } };
+        } else if (value instanceof Date) {
+          return { timestampValue: value.toISOString() };
+        } else {
+          // Handling for maps (objects)
+          let mapValue: any;
+          for (const key in value) {
+            if (value.hasOwnProperty(key)) {
+              mapValue[key] = this.convertValue(value[key]);
+            }
+          }
+          return { mapValue: { fields: mapValue } };
+        }
+      default:
+        // Return null or throw an error for unsupported types
+        return null;
     }
-    // Add more types as needed
-    return null;
+  }
+
+  convertObjectToArray(obj: {
+    [x: string]: any;
+    hasOwnProperty: (arg0: string) => any;
+  }) {
+    let array = [];
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        array.push(obj[key]);
+      }
+    }
+    return array;
   }
 }

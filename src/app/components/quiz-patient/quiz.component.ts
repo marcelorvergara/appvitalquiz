@@ -54,6 +54,10 @@ export class QuizComponent implements OnInit {
   // Final rating - results
   finalScore: string = '';
   bgResultColor: string = '';
+  // Test-Quiz data of requester (dr), patient and testId
+  requester: string = '';
+  patient: string = '';
+  testId: string = '';
 
   constructor(
     private quizService: QuizService,
@@ -72,15 +76,15 @@ export class QuizComponent implements OnInit {
     // Check url for the test requester, doc id and uuid of the test
     if (this.route.firstChild) {
       this.route.firstChild.params.subscribe((params: Params) => {
-        const requester = params['requester'];
-        const patient = params['patient'];
-        const testId = params['testId'];
+        this.requester = params['requester'];
+        this.patient = params['patient'];
+        this.testId = params['testId'];
 
         // Chech in the repo if there is test
         this.dataStorageService
-          .checkUUID(requester, patient, testId)
+          .checkUUID(this.requester, this.patient, this.testId)
           .subscribe((respData) => {
-            if (respData.fields.test_number?.stringValue === testId) {
+            if (respData.fields.test_number?.stringValue === this.testId) {
               this.patientName = respData.fields.nome.stringValue.replaceAll(
                 '_',
                 ' '
@@ -91,14 +95,14 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  increment(quizForm: NgForm) {
+  increment() {
     this.answersList.push(Number(this.answer));
     this.questionNum.update((question) => question + 1);
     // Animate the questions changing
     this.isOpen = !this.isOpen;
   }
 
-  decrement(quizForm: NgForm) {
+  decrement() {
     this.questionNum.update((question) => question - 1);
     this.answer = this.answersList.pop() || 0;
 
@@ -109,11 +113,25 @@ export class QuizComponent implements OnInit {
   onSubmit() {
     // Last question of the quiz
     this.answersList.push(Number(this.answer));
-    // Sum result
+    // Sum result presenting in view (this.finalScore ngIf)
     const scoreSum = this.answersList.reduce((acc, currVal) => {
       return acc + currVal;
     }, 0);
     this.finalScore = this.classifyAnxietyLevel(scoreSum);
+    // Record result in storage
+    const dateOfQuizTest = new Date();
+    const [day, month, year] = [
+      dateOfQuizTest.getDate(),
+      dateOfQuizTest.getMonth(),
+      dateOfQuizTest.getFullYear(),
+    ];
+
+    const dateResultMap = new Map<string, number[]>();
+    dateResultMap.set('_' + day + '_' + month + '_' + year, this.answersList);
+
+    this.dataStorageService
+      .patchPatientTestResult(this.requester, this.patient, dateResultMap)
+      .subscribe((respData) => console.log(respData));
   }
 
   classifyAnxietyLevel(score: number): string {

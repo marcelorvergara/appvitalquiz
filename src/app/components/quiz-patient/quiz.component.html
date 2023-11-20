@@ -28,10 +28,10 @@
     <!-- Navigation buttons -->
     <div class="p-4 flex justify-between mt-16">
       <div>
-        <button type="button" class="btn-custom-actv" (click)="decrement(quizForm)" *ngIf="questionNum() > 0 && questionNum() < 12">Voltar</button>
+        <button type="button" class="btn-custom-actv" (click)="decrement()" *ngIf="questionNum() > 0 && questionNum() < 12">Voltar</button>
       </div>
       <div>
-        <button type="button" class="btn-custom-actv" (click)="increment(quizForm)" *ngIf="questionNum() < 11">Próxima</button>
+        <button type="button" class="btn-custom-actv" (click)="increment()" *ngIf="questionNum() < 11">Próxima</button>
         <button type="submit" class="btn-custom-actv" *ngIf="questionNum() === 11">Finalizar</button>
       </div>
     </div>
