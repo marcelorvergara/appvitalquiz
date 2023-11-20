@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environmets';
 import { Patient, Patients, PatientsDoc } from './models/patient.model';
 import { AuthService } from '../components/auth/auth.service';
-import { catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -67,41 +67,35 @@ export class DataStorageService {
     collectionId: string,
     docId: string,
     dateResultMap: Map<string, number[]>
-  ) {
-    const [dataOfQuizTest] = dateResultMap;
-    console.log(dataOfQuizTest);
-    const resultTestList = dataOfQuizTest[1];
-    const convertedValues = this.convertToFirestoreFormat(resultTestList);
-    const convertedArray = this.convertObjectToArray(convertedValues);
-    return this.http.patch(
-      this.url +
-        this.collectionPath +
-        '-' +
-        collectionId +
-        '/' +
-        docId +
-        '?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=' +
-        dataOfQuizTest[0] +
-        '&alt=json',
-      {
-        fields: {
-          [dataOfQuizTest[0]]: {
-            mapValue: {
-              fields: {
-                resultTest: {
-                  arrayValue: {
-                    values: convertedArray,
-                  },
-                },
-              },
+  ): Observable<any> {
+    if (dateResultMap.size === 0) {
+      throw new Error('dateResultMap is empty');
+    }
+
+    // Extracting the first entry from the map
+    const [date, resultTestList] = [...dateResultMap][0];
+    const convertedArray = resultTestList.map((value) => ({
+      integerValue: value,
+    }));
+
+    // Construct the URL using template literals
+    const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=testsResults&alt=json`;
+
+    // Constructing the payload
+    const payload = {
+      fields: {
+        testsResults: {
+          mapValue: {
+            fields: {
+              [date]: { arrayValue: { values: convertedArray } },
             },
           },
-          test_number: {
-            stringValue: '',
-          },
         },
-      }
-    );
+        test_number: { stringValue: '' }, // Reset 'test_number' so the test can't be done again
+      },
+    };
+
+    return this.http.patch(url, payload);
   }
 
   checkUUID(requester: string, patient: string, testId: string) {

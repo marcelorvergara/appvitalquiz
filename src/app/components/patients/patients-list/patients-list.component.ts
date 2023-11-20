@@ -27,7 +27,6 @@ export class PatientsListComponent implements OnInit {
   }
 
   requestTest(patient: string) {
-    console.log(patient);
     const collectionId = this.authService.getUserData() || '';
     const docId = patient.replaceAll(' ', '_');
     const testId = getUniqueId(1);
