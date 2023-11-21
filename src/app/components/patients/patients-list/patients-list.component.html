@@ -6,18 +6,21 @@
         <th scope="col" class="py-3 px-6"></th>
       </tr>
     </thead>
-    <tbody>
-      @for (patient of patientList; track patient.fields.nome) {
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <td class="py-4 px-6">{{ patient.fields.nome.stringValue }} </td>
-        <td class="py-4 px-6">
-          <button class="font-medium text-blue-400 dark:text-blue-500 hover:underline">Editar</button>
-          <button class="font-medium text-blue-400 dark:text-blue-500 hover:underline ml-4" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Teste</button>
-        </td>
-      </tr>}
-      @empty {
-        <li> Nenhum paciente cadastrado</li>
-      }
+    <tbody *ngIf="patientList.length > 0">
+        @for (patient of patientList; track patient.fields.nome) {
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="py-4 px-6">{{ patient.fields.nome.stringValue }} </td>
+          <td class="py-4 px-6">
+            <button class="font-medium text-blue-400 dark:text-blue-500 hover:underline">Editar</button>
+            <button class="font-medium text-blue-400 dark:text-blue-500 hover:underline ml-4" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Teste</button>
+          </td>
+        </tr>}
+        @empty {
+          <li> Nenhum paciente cadastrado</li>
+        }
     </tbody>
   </table>
+  <div *ngIf="patientList.length === 0" class="mt-4">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
 </div>

@@ -4,11 +4,12 @@ import { DataStorageService } from '../../../shared/data-storage.service';
 import { PatientsDoc } from '../../../shared/models/patient.model';
 import { AuthService } from '../../auth/auth.service';
 import { getUniqueId } from '../../../utils/utils';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-patients-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './patients-list.component.html',
   styleUrl: './patients-list.component.css',
 })
