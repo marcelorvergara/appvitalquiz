@@ -62,7 +62,42 @@ export class DataStorageService {
     );
   }
 
-  // Get patient to update the tests_results map with new test/quiz results
+  // Update patient record with the test result
+  // patchPatientTestResult(
+  //   collectionId: string,
+  //   docId: string,
+  //   dateResultMap: Map<string, number[]>
+  // ): Observable<any> {
+  //   if (dateResultMap.size === 0) {
+  //     throw new Error('dateResultMap is empty');
+  //   }
+
+  //   // Extracting the first entry from the map
+  //   const [date, resultTestList] = [...dateResultMap][0];
+  //   const convertedArray = resultTestList.map((value) => ({
+  //     integerValue: value,
+  //   }));
+
+  //   // Construct the URL using template literals
+  //   const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=tests_results&alt=json`;
+
+  //   // Constructing the payload
+  //   const payload = {
+  //     fields: {
+  //       tests_results: {
+  //         mapValue: {
+  //           fields: {
+  //             [date]: { arrayValue: { values: convertedArray } },
+  //           },
+  //         },
+  //       },
+  //       test_number: { stringValue: '' }, // Reset 'test_number' so the test can't be done again
+  //     },
+  //   };
+
+  //   return this.http.patch(url, payload);
+  // }
+
   getPatientTestResult(collectionId: string, docId: string): Observable<any> {
     const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?alt=json`;
     return this.http.get(url);
@@ -90,7 +125,7 @@ export class DataStorageService {
     docId: string,
     mergedTestData: any
   ): Observable<any> {
-    const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=tests_results&alt=json`;
+    const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=tests_results&alt=json`;
     const payload = {
       fields: {
         tests_results: {
@@ -98,6 +133,7 @@ export class DataStorageService {
             fields: mergedTestData,
           },
         },
+        test_number: { stringValue: '' }, // Reset 'test_number' so the test can't be done again
       },
     };
     return this.http.patch(url, payload);
