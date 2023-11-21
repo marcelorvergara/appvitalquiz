@@ -120,7 +120,7 @@ export class QuizComponent implements OnInit {
     this.finalScore = this.classifyAnxietyLevel(scoreSum);
     // Record result in storage
     const dateOfQuizTest = new Date();
-    const [day, month, year] = [
+    let [day, month, year] = [
       dateOfQuizTest.getDate(),
       dateOfQuizTest.getMonth(),
       dateOfQuizTest.getFullYear(),
@@ -130,8 +130,21 @@ export class QuizComponent implements OnInit {
     dateResultMap.set('_' + day + '_' + month + '_' + year, this.answersList);
 
     this.dataStorageService
-      .patchPatientTestResult(this.requester, this.patient, dateResultMap)
-      .subscribe((respData) => console.log(respData));
+      // .patchPatientTestResult(this.requester, this.patient, dateResultMap)
+      // .subscribe((respData) => {
+      //   console.log(respData);
+      // });
+      .getPatientTestResult(this.requester, this.patient)
+      .subscribe((respData) => {
+        const existinResults = this.dataStorageService.mergeTestResults(
+          respData,
+          '_' + day + '_' + month + '_' + year,
+          this.answersList
+        );
+        this.dataStorageService
+          .updatePatientTestResult(this.requester, this.patient, existinResults)
+          .subscribe((respDate) => console.log(respData));
+      });
   }
 
   classifyAnxietyLevel(score: number): string {

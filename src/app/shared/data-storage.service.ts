@@ -43,7 +43,7 @@ export class DataStorageService {
     );
   }
 
-  // Updatate paticent record with the test number
+  // Updatate paticent record with the test/quiz number
   patchPatient(collectionId: string, docId: string, testId: string) {
     const newTest = {
       test_number: {
@@ -62,39 +62,44 @@ export class DataStorageService {
     );
   }
 
-  // Update patient record with the test result
-  patchPatientTestResult(
-    collectionId: string,
-    docId: string,
-    dateResultMap: Map<string, number[]>
-  ): Observable<any> {
-    if (dateResultMap.size === 0) {
-      throw new Error('dateResultMap is empty');
-    }
+  // Get patient to update the tests_results map with new test/quiz results
+  getPatientTestResult(collectionId: string, docId: string): Observable<any> {
+    const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?alt=json`;
+    return this.http.get(url);
+  }
 
-    // Extracting the first entry from the map
-    const [date, resultTestList] = [...dateResultMap][0];
-    const convertedArray = resultTestList.map((value) => ({
+  mergeTestResults(
+    existingData: any,
+    newDate: string,
+    newResultTestList: number[]
+  ): any {
+    const existingResults =
+      existingData.fields.tests_results?.mapValue?.fields || {};
+    const convertedArray = newResultTestList.map((value) => ({
       integerValue: value,
     }));
 
-    // Construct the URL using template literals
-    const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=testsResults&alt=json`;
+    // Merge new data with existing data
+    existingResults[newDate] = { arrayValue: { values: convertedArray } };
 
-    // Constructing the payload
+    return existingResults;
+  }
+
+  updatePatientTestResult(
+    collectionId: string,
+    docId: string,
+    mergedTestData: any
+  ): Observable<any> {
+    const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=tests_results&alt=json`;
     const payload = {
       fields: {
-        testsResults: {
+        tests_results: {
           mapValue: {
-            fields: {
-              [date]: { arrayValue: { values: convertedArray } },
-            },
+            fields: mergedTestData,
           },
         },
-        test_number: { stringValue: '' }, // Reset 'test_number' so the test can't be done again
       },
     };
-
     return this.http.patch(url, payload);
   }
 

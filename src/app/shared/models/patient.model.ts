@@ -20,6 +20,7 @@ interface Fields {
   nome: Nome;
   email: Email;
   test_number?: TestNumber;
+  tests_results?: any;
 }
 
 interface Phone {
