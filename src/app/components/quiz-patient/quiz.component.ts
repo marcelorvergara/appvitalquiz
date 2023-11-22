@@ -120,7 +120,7 @@ export class QuizComponent implements OnInit {
     this.finalScore = this.classifyAnxietyLevel(scoreSum);
     // Record result in storage
     const dateOfQuizTest = new Date();
-    let [day, month, year] = [
+    const [day, month, year] = [
       dateOfQuizTest.getDate(),
       dateOfQuizTest.getMonth(),
       dateOfQuizTest.getFullYear(),
