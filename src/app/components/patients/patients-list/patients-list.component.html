@@ -1,5 +1,5 @@
 <div class="overflow-x-auto relative sm:w-8/12 mx-auto">
-  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 m-2">
     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
         <th scope="col" class="py-3 px-6">Nome</th>
@@ -8,7 +8,7 @@
     </thead>
     <tbody *ngIf="patientList.length > 0">
         @for (patient of patientList; track patient.fields.nome) {
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        <tr class="bg-white border-b">
           <td class="py-4 px-6">{{ patient.fields.nome.stringValue }} </td>
           <td class="py-4 px-6 text-right ">
             <button class="font-medium text-blue-400 dark:text-blue-500 hover:underline">Editar</button>
