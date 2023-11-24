@@ -20,6 +20,8 @@ import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-al
 export class PatientRegisterComponent {
   isLoading = false;
   error = '';
+  contactOption = ['Whatsapp', 'SMS'];
+  contact = 'Whatsapp';
 
   constructor(private dataSotrageService: DataStorageService) {}
 
@@ -28,6 +30,7 @@ export class PatientRegisterComponent {
       this.error = 'Todos os campos são obrigatórios';
       return;
     }
+    console.log(form.value);
 
     this.isLoading = true;
     this.dataSotrageService.createPatient(form.value).subscribe({

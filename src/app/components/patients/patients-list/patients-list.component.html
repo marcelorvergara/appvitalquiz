@@ -12,7 +12,7 @@
           <td class="py-4 px-6">{{ patient.fields.nome.stringValue }} </td>
           <td class="py-4 px-6 text-right ">
             <button class="font-medium text-blue-400 hover:underline">Editar</button>
-            <button class="font-medium text-blue-400 hover:underline ml-2" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Teste</button>
+            <button class="font-medium text-blue-400 hover:underline ml-2" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Avaliação</button>
             <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results">Resultados</button>
           </td>
         </tr>}

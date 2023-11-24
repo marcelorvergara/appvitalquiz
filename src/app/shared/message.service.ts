@@ -14,7 +14,7 @@ export class MessageService {
   sendMessage(nome: string, msg: string, phone: string) {
     return this.http.post<ReturnedFromMessageSent>(this.messageApi, {
       number: 'whatsapp:+55' + phone,
-      message: `Olá ${nome}. Há novo teste a ser realizado no App Vital Quiz.\nVisite o site ${msg} e faça sua avaliação.`,
+      message: `Olá ${nome},\nHá uma nova avaliação disponível.\nVisite o site ${msg} e faça sua avaliação.`,
     });
   }
 }
