@@ -35,14 +35,12 @@ import { DataStorageService } from '../../shared/data-storage.service';
 })
 export class QuizComponent implements OnInit {
   questions: string[] = [];
-  answerOption: string[] = [];
-  smileEmojis = [
-    { emoji: '😄', selected: false },
-    { emoji: '😊', selected: false },
-    { emoji: '😐', selected: false },
-    { emoji: '😔', selected: false },
-    { emoji: '😩', selected: false },
-  ];
+  answerOption: {
+    id: number;
+    text: string;
+    emoji: string;
+  }[] = [];
+
   questionNum = signal(0);
   // Animation
   isOpen = true;
@@ -63,11 +61,7 @@ export class QuizComponent implements OnInit {
     private quizService: QuizService,
     private route: ActivatedRoute,
     private dataStorageService: DataStorageService
-  ) {
-    effect(() => {
-      this.isOpen = !this.isOpen;
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.questions = this.quizService.getQuestions();
@@ -103,9 +97,12 @@ export class QuizComponent implements OnInit {
   }
 
   decrement() {
+    // Get the last answer in the array of answers
+    this.answer = this.answersList[this.questionNum() - 1];
+    // Decrement the question number
     this.questionNum.update((question) => question - 1);
-    this.answer = this.answersList.pop() || 0;
-
+    // Remove the last item from the answer list
+    this.answersList.pop();
     // Animate the questions changing
     this.isOpen = !this.isOpen;
   }
@@ -118,33 +115,36 @@ export class QuizComponent implements OnInit {
       return acc + currVal;
     }, 0);
     this.finalScore = this.classifyAnxietyLevel(scoreSum);
-    // Record result in storage
-    const dateOfQuizTest = new Date();
-    const [day, month, year] = [
-      dateOfQuizTest.getDate(),
-      dateOfQuizTest.getMonth(),
-      dateOfQuizTest.getFullYear(),
-    ];
 
-    const dateResultMap = new Map<string, number[]>();
-    dateResultMap.set('_' + day + '_' + month + '_' + year, this.answersList);
+    if (this.requester !== '') {
+      // Record result in storage
+      const dateOfQuizTest = new Date();
+      const [day, month, year] = [
+        dateOfQuizTest.getDate(),
+        dateOfQuizTest.getMonth(),
+        dateOfQuizTest.getFullYear(),
+      ];
 
-    this.dataStorageService
-      // .patchPatientTestResult(this.requester, this.patient, dateResultMap)
-      // .subscribe((respData) => {
-      //   console.log(respData);
-      // });
-      .getPatientTestResult(this.requester, this.patient)
-      .subscribe((respData) => {
-        const existinResults = this.dataStorageService.mergeTestResults(
-          respData,
-          '_' + day + '_' + month + '_' + year,
-          this.answersList
-        );
-        this.dataStorageService
-          .updatePatientTestResult(this.requester, this.patient, existinResults)
-          .subscribe((respDate) => console.log(respData));
-      });
+      const dateResultMap = new Map<string, number[]>();
+      dateResultMap.set('_' + day + '_' + month + '_' + year, this.answersList);
+
+      this.dataStorageService
+        .getPatientTestResult(this.requester, this.patient)
+        .subscribe((respData) => {
+          const existinResults = this.dataStorageService.mergeTestResults(
+            respData,
+            '_' + day + '_' + month + '_' + year,
+            this.answersList
+          );
+          this.dataStorageService
+            .updatePatientTestResult(
+              this.requester,
+              this.patient,
+              existinResults
+            )
+            .subscribe((respDate) => console.log(respData));
+        });
+    }
   }
 
   classifyAnxietyLevel(score: number): string {

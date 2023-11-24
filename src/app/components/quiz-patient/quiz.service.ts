@@ -16,7 +16,14 @@ export class QuizService {
     'Categoria II : Ansiedade Somática : Sintomas genito-urinários (Urgência miccional, amenorreia, menorragia, erecção incompleta, ejaculação precoce, impotência,diminuição da libido, etc)',
     'Categoria II : Ansiedade Somática : Sintomas do sistema nervoso autónomo (Boca seca, rubor, palidez, tendência a sudorese, mãos molhadas, inquietação, tensão, dor de cabeça, pêlos eriçados, tonturas, etc)',
   ];
-  answersList = ['Ausente', 'Leve', 'Moderada', 'Frequente', 'Muito frequente'];
+
+  answersList = [
+    { id: 0, text: 'Ausente', emoji: '😄' },
+    { id: 1, text: 'Leve', emoji: '😊' },
+    { id: 2, text: 'Moderada', emoji: '😐' },
+    { id: 3, text: 'Frequente', emoji: '😔' },
+    { id: 4, text: 'Muito frequente', emoji: '😩' },
+  ];
 
   getQuestions() {
     return this.questionsList.slice();

@@ -26,7 +26,7 @@ export class DataStorageService {
           '-' +
           drUserId +
           '?documentId=' +
-          data.nome.replaceAll(' ', '_'),
+          data.nome.trim().replaceAll(' ', '_'),
         {
           fields: this.convertToFirestoreFormat(data),
         }
@@ -181,7 +181,7 @@ export class DataStorageService {
   private convertValue(value: any): any {
     switch (typeof value) {
       case 'string':
-        return { stringValue: value };
+        return { stringValue: value.trim() };
       case 'number':
         // Firestore differentiates between integer and double values
         return Number.isInteger(value)
