@@ -107,6 +107,10 @@ export class QuizComponent implements OnInit {
     this.isOpen = !this.isOpen;
   }
 
+  selectOption(itemId: number) {
+    this.answer = itemId;
+  }
+
   onSubmit() {
     // Last question of the quiz
     this.answersList.push(Number(this.answer));
