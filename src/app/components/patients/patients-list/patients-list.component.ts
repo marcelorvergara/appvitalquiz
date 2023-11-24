@@ -58,7 +58,8 @@ export class PatientsListComponent implements OnInit {
             .sendMessage(
               respData.fields.nome.stringValue,
               testUrl,
-              respData.fields.phone.stringValue
+              respData.fields.phone.stringValue,
+              respData.fields.contact.stringValue
             )
             .pipe(map((messageResponse) => ({ respData, messageResponse })))
         ),
