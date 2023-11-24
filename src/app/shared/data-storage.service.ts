@@ -50,7 +50,7 @@ export class DataStorageService {
         stringValue: testId,
       },
     };
-    return this.http.patch(
+    return this.http.patch<PatientsDoc>(
       this.url +
         this.collectionPath +
         '-' +
