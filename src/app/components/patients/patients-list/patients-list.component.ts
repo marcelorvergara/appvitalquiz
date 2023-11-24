@@ -68,8 +68,10 @@ export class PatientsListComponent implements OnInit {
         })
       )
       .subscribe((respData) => {
-        if (respData) {
+        if (respData?.messageResponse.errorCode !== null) {
           console.log('Test requested and message sent:', respData);
+        } else {
+          console.error('Error:', respData.messageResponse.errorMessage);
         }
       });
   }
