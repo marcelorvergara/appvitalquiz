@@ -12,8 +12,9 @@ export class MessageService {
   constructor(private http: HttpClient) {}
 
   sendMessage(nome: string, msg: string, phone: string, contactType: string) {
+    const contactTypeStr = contactType === 'Whatsapp' ? 'whatsapp:+55' : '+55';
     return this.http.post<ReturnedFromMessageSent>(this.messageApi, {
-      number: contactType === 'Whatsapp' ? 'whatsapp:+55' : '+55' + phone,
+      number: `${contactTypeStr}${phone}`,
       message: `Olá ${nome},\nHá uma nova avaliação disponível.\nVisite o site ${msg} e faça sua avaliação.`,
     });
   }
