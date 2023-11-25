@@ -8,6 +8,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { MessageService } from '../../../shared/message.service';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 const BASE_TEST_URL = 'https://vitalquiz.com/patient-area';
 
@@ -33,7 +34,8 @@ export class PatientsListComponent implements OnInit {
   constructor(
     private dataStorageService: DataStorageService,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,10 +45,7 @@ export class PatientsListComponent implements OnInit {
         this.isLoading = true;
         if (patients) {
           this.patientList = patients.documents;
-        } else {
-          console.log('teste');
         }
-
         this.isLoading = false;
       },
       catchError((error) => {
@@ -93,5 +92,15 @@ export class PatientsListComponent implements OnInit {
       });
   }
 
-  patientResults() {}
+  patientResults(patient: string) {
+    const collectionId = this.authService.getUserData() || '';
+    const docId = generateDocId(patient);
+    this.dataStorageService
+      .getPatientTestResult(collectionId, docId)
+      .subscribe((respData) => {
+        if (respData) {
+          this.router.navigate(['/doctor-area/patient-results']);
+        }
+      });
+  }
 }

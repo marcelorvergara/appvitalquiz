@@ -13,7 +13,7 @@
           <td class="py-4 px-6 text-right ">
             <button class="font-medium text-blue-400 hover:underline">Editar</button>
             <button class="font-medium text-blue-400 hover:underline ml-2" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Avaliação</button>
-            <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results" (click)="patientResults()">Resultados</button>
+            <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results" (click)="patientResults(patient.fields.nome.stringValue)">Resultados</button>
           </td>
         </tr>}
         @empty {

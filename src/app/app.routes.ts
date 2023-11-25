@@ -8,6 +8,7 @@ import { SigninComponent } from './components/auth/login/signin.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { PatientComponent } from './pages/patient/patient.component';
 import { QuizComponent } from './components/quiz-patient/quiz.component';
+import { PatientResultsComponent } from './components/patients/patient-results/patient-results.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -36,6 +37,10 @@ export const routes: Routes = [
       {
         path: 'patient-registry',
         component: PatientRegisterComponent,
+      },
+      {
+        path: 'patient-results',
+        component: PatientResultsComponent,
       },
     ],
   },

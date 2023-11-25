@@ -30,7 +30,6 @@ export class PatientRegisterComponent {
       this.error = 'Todos os campos são obrigatórios';
       return;
     }
-    console.log(form.value);
 
     this.isLoading = true;
     this.dataSotrageService.createPatient(form.value).subscribe({

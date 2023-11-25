@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../../environments/environmets';
-import { Patient, Patients, PatientsDoc } from './models/patient.model';
+import {
+  Patient,
+  Patients,
+  PatientsDoc,
+  MapValue,
+} from './models/patient.model';
 import { AuthService } from '../components/auth/auth.service';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +17,7 @@ export class DataStorageService {
   private databaseId = '(default)';
   private collectionPath = 'patients';
   private url = `https://firestore.googleapis.com/v1/projects/${environment.projectId}/databases/${this.databaseId}/documents/`;
+  private patientData: MapValue | null = null;
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -35,7 +41,7 @@ export class DataStorageService {
   }
 
   fetchPatients() {
-    // TODO: Improve sec getUserData
+    // TODO: improve sec getUserData
     const drUserId = this.authService.getUserData();
 
     return this.http.get<Patients>(
@@ -62,45 +68,18 @@ export class DataStorageService {
     );
   }
 
-  // Update patient record with the test result
-  // patchPatientTestResult(
-  //   collectionId: string,
-  //   docId: string,
-  //   dateResultMap: Map<string, number[]>
-  // ): Observable<any> {
-  //   if (dateResultMap.size === 0) {
-  //     throw new Error('dateResultMap is empty');
-  //   }
-
-  //   // Extracting the first entry from the map
-  //   const [date, resultTestList] = [...dateResultMap][0];
-  //   const convertedArray = resultTestList.map((value) => ({
-  //     integerValue: value,
-  //   }));
-
-  //   // Construct the URL using template literals
-  //   const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?currentDocument.exists=true&updateMask.fieldPaths=test_number&updateMask.fieldPaths=tests_results&alt=json`;
-
-  //   // Constructing the payload
-  //   const payload = {
-  //     fields: {
-  //       tests_results: {
-  //         mapValue: {
-  //           fields: {
-  //             [date]: { arrayValue: { values: convertedArray } },
-  //           },
-  //         },
-  //       },
-  //       test_number: { stringValue: '' }, // Reset 'test_number' so the test can't be done again
-  //     },
-  //   };
-
-  //   return this.http.patch(url, payload);
-  // }
-
   getPatientTestResult(collectionId: string, docId: string): Observable<any> {
     const url = `${this.url}${this.collectionPath}-${collectionId}/${docId}?alt=json`;
-    return this.http.get(url);
+    return this.http.get<PatientsDoc>(url).pipe(
+      tap((patients) => {
+        if (patients.fields.tests_results?.mapValue)
+          this.patientData = patients.fields.tests_results?.mapValue;
+      })
+    );
+  }
+
+  getPatientResultData() {
+    return this.patientData?.fields;
   }
 
   mergeTestResults(
