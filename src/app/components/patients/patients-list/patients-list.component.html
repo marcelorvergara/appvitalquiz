@@ -1,5 +1,5 @@
-<div class="overflow-x-auto relative sm:w-4/12 mx-auto">
-  <table class="w-11/12 text-sm text-left text-gray-500 m-2">
+<div class="overflow-x-auto relative sm:w-4/12 mx-auto" *ngIf="patientList">
+  <table class="w-11/12 text-sm text-left text-gray-500 m-2" >
     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
       <tr>
         <th scope="col" class="py-3 px-6">Nome</th>
@@ -13,7 +13,7 @@
           <td class="py-4 px-6 text-right ">
             <button class="font-medium text-blue-400 hover:underline">Editar</button>
             <button class="font-medium text-blue-400 hover:underline ml-2" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Avaliação</button>
-            <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results">Resultados</button>
+            <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results" (click)="patientResults()">Resultados</button>
           </td>
         </tr>}
         @empty {
@@ -21,7 +21,12 @@
         }
     </tbody>
   </table>
-  <div *ngIf="patientList.length === 0" class="mt-4">
-    <app-loading-spinner></app-loading-spinner>
   </div>
+  <div>
+    <div *ngIf="isLoading" class="mt-4">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <div *ngIf="!isLoading && !patientList" class="mt-4">
+      <span>Nenhum paciente cadastrado</span>
+    </div>
 </div>

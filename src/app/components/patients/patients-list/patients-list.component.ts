@@ -28,6 +28,7 @@ const constructTestUrl = (collectionId: string, respData: any) => {
 })
 export class PatientsListComponent implements OnInit {
   patientList: PatientsDoc[] = [];
+  isLoading = false;
 
   constructor(
     private dataStorageService: DataStorageService,
@@ -36,11 +37,26 @@ export class PatientsListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dataStorageService.fetchPatients().subscribe((patients) => {
-      this.patientList = patients.documents;
-    });
+    // TODO: error handling
+    this.dataStorageService.fetchPatients().subscribe(
+      (patients) => {
+        this.isLoading = true;
+        if (patients) {
+          this.patientList = patients.documents;
+        } else {
+          console.log('teste');
+        }
+
+        this.isLoading = false;
+      },
+      catchError((error) => {
+        console.error(error);
+        return of(null);
+      })
+    );
   }
 
+  // Update DB wit Test ID and send message to the patient
   requestTest(patient: string) {
     const collectionId = this.authService.getUserData() || '';
     const docId = generateDocId(patient);
@@ -76,4 +92,6 @@ export class PatientsListComponent implements OnInit {
         }
       });
   }
+
+  patientResults() {}
 }
