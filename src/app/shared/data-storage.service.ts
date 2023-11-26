@@ -19,6 +19,9 @@ export class DataStorageService {
   private url = `https://firestore.googleapis.com/v1/projects/${environment.projectId}/databases/${this.databaseId}/documents/`;
   private patientData: MapValue | null = null;
 
+  private patients: Patients = { documents: [] };
+  private patientToEdit?: PatientsDoc;
+
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   createPatient(data: Patient) {
@@ -40,13 +43,61 @@ export class DataStorageService {
       .pipe(catchError((errorResp) => this.handleError(errorResp)));
   }
 
+  editPatient(data: Patient) {
+    // TODO: Improve sec getUserData
+    const drUserId = this.authService.getUserData();
+
+    return this.http
+      .patch(
+        this.url +
+          this.collectionPath +
+          '-' +
+          drUserId +
+          '/' +
+          data.nome.trim().replaceAll(' ', '_') +
+          '?currentDocument.exists=true&updateMask.fieldPaths=nome&updateMask.fieldPaths=email&updateMask.fieldPaths=phone&updateMask.fieldPaths=contact&alt=json',
+        {
+          fields: this.convertToFirestoreFormat(data),
+        }
+      )
+      .pipe(catchError((errorResp) => this.handleError(errorResp)));
+  }
+
   fetchPatients() {
     // TODO: improve sec getUserData
     const drUserId = this.authService.getUserData();
 
-    return this.http.get<Patients>(
-      this.url + this.collectionPath + '-' + drUserId
+    return this.http
+      .get<Patients>(this.url + this.collectionPath + '-' + drUserId)
+      .pipe(
+        tap((patients: Patients) => {
+          if (patients) {
+            this.patients = patients;
+          }
+        })
+      );
+  }
+
+  getPatientToEdit(name: string) {
+    const patient = this.patients.documents.find(
+      (f) => f.fields.nome.stringValue === name
     );
+    if (patient) {
+      this.patientToEdit = patient;
+      return 'ok';
+    }
+    return null;
+  }
+
+  checkPatientToEdit() {
+    if (this.patientToEdit) {
+      return this.patientToEdit;
+    }
+    return null;
+  }
+
+  deletePatientToEdit() {
+    this.patientToEdit = undefined;
   }
 
   // Updatate paticent record with the test/quiz number

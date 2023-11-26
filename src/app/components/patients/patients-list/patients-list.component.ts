@@ -8,7 +8,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { MessageService } from '../../../shared/message.service';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 const BASE_TEST_URL = 'https://vitalquiz.com/patient-area';
 
@@ -23,7 +23,7 @@ const constructTestUrl = (collectionId: string, respData: any) => {
 @Component({
   selector: 'app-patients-list',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent],
+  imports: [CommonModule, LoadingSpinnerComponent, RouterModule],
   templateUrl: './patients-list.component.html',
   styleUrl: './patients-list.component.css',
 })
@@ -53,6 +53,18 @@ export class PatientsListComponent implements OnInit {
         return of(null);
       })
     );
+  }
+
+  // Edit patient
+  editPatient(patientName: PatientsDoc) {
+    this.dataStorageService.getPatientToEdit(
+      patientName.fields.nome.stringValue
+    );
+    this.router.navigate([
+      '/doctor-area/patient-registry/' +
+        patientName.fields.nome.stringValue +
+        '/edit',
+    ]);
   }
 
   // Update DB wit Test ID and send message to the patient

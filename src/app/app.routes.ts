@@ -37,6 +37,12 @@ export const routes: Routes = [
       {
         path: 'patient-registry',
         component: PatientRegisterComponent,
+        children: [
+          {
+            path: ':name/edit',
+            component: PatientRegisterComponent,
+          },
+        ],
       },
       {
         path: 'patient-results',
