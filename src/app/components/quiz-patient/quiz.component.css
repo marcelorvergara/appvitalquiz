@@ -32,7 +32,7 @@ progress::-moz-progress-bar {
 }
 
 #progressText {
-  margin-top: 6px;
+  margin-top: 8px;
   position: absolute; /* Posicionamento absoluto dentro do contêiner relativo */
   width: 100%; /* Largura para centralizar o texto */
   top: 0; /* Posição no topo do contêiner */
