@@ -19,8 +19,14 @@ type MapOfDateAndResults = {
 })
 export class PatientResultsComponent implements OnInit {
   patientResultsPerDate: DateFields | null = null;
-
   options: EChartsOption = {};
+  resultsArray: { date: string; value: number }[] = [];
+  totResultsTable: {
+    date: string;
+    totValue: number;
+    totPsychic: number;
+    totSomatic: number;
+  }[] = [];
 
   constructor(private dataStorageService: DataStorageService) {}
 
@@ -32,12 +38,11 @@ export class PatientResultsComponent implements OnInit {
       this.patientResultsPerDate
     );
 
-    // Graph
+    // Graph Data
     const xAxisData = [];
     const totDataPerDay = [];
     const sumPsychicPerDay = [];
     const sumSomaticPerDay = [];
-    // const data2 = [];
 
     // Sort the days of the report
     const mapOfResultsSorted = this.sortObjectByDate(totSum);
@@ -97,6 +102,20 @@ export class PatientResultsComponent implements OnInit {
       animationEasing: 'elasticInOut',
       animationDelayUpdate: (idx) => idx * 5,
     };
+
+    // Results Table
+    this.resultsArray = Object.entries(mapOfResultsSorted).map(
+      ([date, value]) => ({ date, value })
+    );
+
+    for (const [idx, item] of this.resultsArray.entries()) {
+      this.totResultsTable.push({
+        date: item.date,
+        totValue: item.value,
+        totPsychic: sumPsychicPerDay[idx],
+        totSomatic: sumSomaticPerDay[idx],
+      });
+    }
   }
 
   sumResultsPerTest(results: DateFields | null) {
