@@ -18,7 +18,10 @@ type MapOfDateAndResults = {
   providers: [provideEcharts()],
 })
 export class PatientResultsComponent implements OnInit {
-  patientResultsPerDate: DateFields | null = null;
+  patientNameAndResultsPerDate: { name: string; data?: DateFields } = {
+    name: '',
+    data: undefined,
+  }; // DateFields | null = null;
   options: EChartsOption = {};
   resultsArray: { date: string; value: number }[] = [];
   totResultsTable: {
@@ -32,10 +35,10 @@ export class PatientResultsComponent implements OnInit {
 
   ngOnInit(): void {
     // Get and prepare the test results of the patient
-    this.patientResultsPerDate =
+    this.patientNameAndResultsPerDate =
       this.dataStorageService.getPatientResultData() || null;
     const { sumPsychic, sumSomatic, totSum } = this.sumResultsPerTest(
-      this.patientResultsPerDate
+      this.patientNameAndResultsPerDate.data
     );
 
     // Graph Data
@@ -74,9 +77,9 @@ export class PatientResultsComponent implements OnInit {
       },
       yAxis: {
         type: 'value',
-        boundaryGap: [0, '100%'],
+        boundaryGap: [0, '10%'],
         splitLine: {
-          show: false,
+          show: true,
         },
       },
       series: [
@@ -84,19 +87,19 @@ export class PatientResultsComponent implements OnInit {
           name: 'Totais',
           type: 'line',
           data: totDataPerDay,
-          animationDelay: (idx) => idx * 10,
+          animationDelay: (idx) => idx * 30,
         },
         {
           name: 'Psíquica',
           type: 'line',
           data: sumPsychicPerDay,
-          animationDelay: (idx) => idx * 10,
+          animationDelay: (idx) => idx * 15,
         },
         {
           name: 'Somática',
           type: 'line',
           data: sumSomaticPerDay,
-          animationDelay: (idx) => idx * 10,
+          animationDelay: (idx) => idx * 45,
         },
       ],
       animationEasing: 'elasticInOut',
@@ -118,7 +121,7 @@ export class PatientResultsComponent implements OnInit {
     }
   }
 
-  sumResultsPerTest(results: DateFields | null) {
+  sumResultsPerTest(results: DateFields | undefined) {
     let sumPsychic: MapOfDateAndResults = {};
     let sumSomatic: MapOfDateAndResults = {};
     let totSum: MapOfDateAndResults = {};

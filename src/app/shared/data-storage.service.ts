@@ -17,7 +17,10 @@ export class DataStorageService {
   private databaseId = '(default)';
   private collectionPath = 'patients';
   private url = `https://firestore.googleapis.com/v1/projects/${environment.projectId}/databases/${this.databaseId}/documents/`;
-  private patientData: MapValue | null = null;
+  private patientData: { name: string; data?: MapValue } = {
+    name: '',
+    data: undefined,
+  };
 
   private patients: Patients = { documents: [] };
   private patientToEdit?: PatientsDoc;
@@ -124,13 +127,19 @@ export class DataStorageService {
     return this.http.get<PatientsDoc>(url).pipe(
       tap((patients) => {
         if (patients.fields.tests_results?.mapValue)
-          this.patientData = patients.fields.tests_results?.mapValue;
+          this.patientData = {
+            name: patients.fields.nome.stringValue,
+            data: patients.fields.tests_results?.mapValue,
+          };
       })
     );
   }
 
   getPatientResultData() {
-    return this.patientData?.fields;
+    return {
+      name: this.patientData?.name,
+      data: this.patientData.data?.fields,
+    };
   }
 
   mergeTestResults(
