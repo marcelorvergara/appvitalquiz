@@ -1,5 +1,5 @@
-<div class="overflow-x-auto relative sm:w-4/12 mx-auto" *ngIf="patientList">
-  <table class="w-11/12 text-sm text-left text-gray-500 m-2" >
+<div class="overflow-x-auto relative sm:w-4/12" *ngIf="patientList">
+  <table class="text-sm text-gray-500">
     <!-- <thead class="text-xs text-gray-700 uppercase bg-gray-50">
       <tr>
         <th scope="col" class="py-3 px-6"></th>
@@ -10,7 +10,7 @@
         @for (patient of patientList; track patient.fields.nome) {
         <tr class="bg-white border-b">
           <td class="py-4 px-6">{{ patient.fields.nome.stringValue }} </td>
-          <td class="py-4 px-6 text-right ">
+          <td class="py-4 px-6 text-right">
             <button class="font-medium text-blue-400 hover:underline" (click)="editPatient(patient)">Editar</button>
             <button class="font-medium text-blue-400 hover:underline ml-2" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Avaliação</button>
             <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results" (click)="patientResults(patient.fields.nome.stringValue)">Resultados</button>
