@@ -1,29 +1,33 @@
-<div class="p-4">
-  {{ patientNameAndResultsPerDate.name }}
-</div>
-<div echarts  [options]="options"  class="container mx-auto flex w-full md:w-11/12 lg:w-9/12 xl:w-8/12">
-</div>
+@if(patientNameAndResultsPerDate.name) {
+  <div class="p-4">
+    {{ patientNameAndResultsPerDate.name }}
+  </div>
+  <div echarts  [options]="options"  class="container mx-auto flex w-full md:w-11/12 lg:w-9/12 xl:w-8/12">
+  </div>
 
-<!-- Results Table -->
-<div class="container mx-auto p-4 w-full md:w-10/12 lg:w-8/12 xl:w-7/12">
-  <table class=" min-w-full table-auto border-collapse border border-gray-200">
-    <thead>
-      <tr>
-        <th class="border border-gray-300 px-2 py-2 text-gray-600">Data</th>
-        <th class="border border-gray-300 px-2 py-2 text-gray-600">Total</th>
-        <th class="border border-gray-300 px-2 py-2 text-gray-600">Psíquico</th>
-        <th class="border border-gray-300 px-2 py-2 text-gray-600">Somático</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for(item of totResultsTable; track item; let idx = $index) {
-      <tr class="text-center">
-        <td class="border border-gray-300 px-2 py-2">{{ item.date.replace("_", "").replaceAll("_", "/") }}</td>
-        <td class="border border-gray-300 px-2 py-2">{{ item.totValue }}</td>
-        <td class="border border-gray-300 px-2 py-2">{{ item.totPsychic }}</td>
-        <td class="border border-gray-300 px-2 py-2">{{ item.totSomatic }}</td>
-      </tr>
-    }
-    </tbody>
-  </table>
-</div>
+  <!-- Results Table -->
+  <div class="container mx-auto p-4 w-full md:w-10/12 lg:w-8/12 xl:w-7/12">
+    <table class=" min-w-full table-auto border-collapse border border-gray-200">
+      <thead>
+        <tr>
+          <th class="border border-gray-300 px-2 py-2 text-gray-600">Data</th>
+          <th class="border border-gray-300 px-2 py-2 text-gray-600">Total</th>
+          <th class="border border-gray-300 px-2 py-2 text-gray-600">Psíquico</th>
+          <th class="border border-gray-300 px-2 py-2 text-gray-600">Somático</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(item of totResultsTable; track item; let idx = $index) {
+        <tr class="text-center">
+          <td class="border border-gray-300 px-2 py-2">{{ item.date.replace("_", "").replaceAll("_", "/") }}</td>
+          <td class="border border-gray-300 px-2 py-2">{{ item.totValue }}</td>
+          <td class="border border-gray-300 px-2 py-2">{{ item.totPsychic }}</td>
+          <td class="border border-gray-300 px-2 py-2">{{ item.totSomatic }}</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  <div class="m-4">Nenhum paciente selecionado. Selecione um na Lista para vizualizar os resultados.</div>
+}
