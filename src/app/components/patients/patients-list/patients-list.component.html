@@ -8,12 +8,12 @@
     </thead> -->
     <tbody *ngIf="patientList.length > 0">
         @for (patient of patientList; track patient.fields.nome) {
-        <tr class="bg-white border-b">
-          <td class="py-4 px-6">{{ patient.fields.nome.stringValue }} </td>
-          <td class="py-4 px-6 text-right">
+        <tr class="bg-white border-b text-left">
+          <td class="py-4 px-6 w-7/12">{{ patient.fields.nome.stringValue }} </td>
+          <td class="py-4 px-6 w-5/12">
             <button class="font-medium text-blue-400 hover:underline" (click)="editPatient(patient)">Editar</button>
-            <button class="font-medium text-blue-400 hover:underline ml-2" (click)="requestTest(patient.fields.nome.stringValue)">Solicitar Avaliação</button>
-            <button class="font-medium text-blue-400 hover:underline ml-2 mt-4" *ngIf="patient.fields.tests_results" (click)="patientResults(patient.fields.nome.stringValue)">Resultados</button>
+            <button class="font-medium text-blue-400 hover:underline mt-2" (click)="requestTest(patient.fields.nome.stringValue)">Nova Avaliação</button>
+            <button class="font-medium text-blue-400 hover:underline mt-2" *ngIf="patient.fields.tests_results" (click)="patientResults(patient.fields.nome.stringValue)">Resultados</button>
           </td>
         </tr>}
         @empty {
