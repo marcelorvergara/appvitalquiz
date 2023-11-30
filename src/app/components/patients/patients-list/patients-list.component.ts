@@ -8,7 +8,8 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { MessageService } from '../../../shared/message.service';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { AlertBoxComponent } from '../../../shared/alert-box/alert-box.component';
 
 const BASE_TEST_URL = 'https://vitalquiz.com/patient-area';
 
@@ -23,13 +24,15 @@ const constructTestUrl = (collectionId: string, respData: any) => {
 @Component({
   selector: 'app-patients-list',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent, RouterModule],
+  imports: [CommonModule, LoadingSpinnerComponent, AlertBoxComponent],
   templateUrl: './patients-list.component.html',
   styleUrl: './patients-list.component.css',
 })
 export class PatientsListComponent implements OnInit {
   patientList: PatientsDoc[] = [];
   isLoading = false;
+  sentTest: boolean = false;
+  sentTestError: boolean = false;
 
   constructor(
     private dataStorageService: DataStorageService,
@@ -96,10 +99,13 @@ export class PatientsListComponent implements OnInit {
         })
       )
       .subscribe((respData) => {
+        console.log(respData);
         if (respData?.messageResponse.errorCode !== null) {
           console.log('Test requested and message sent:', respData);
+          this.sentTest = true;
         } else {
           console.error('Error:', respData.messageResponse.errorMessage);
+          this.sentTestError = true;
         }
       });
   }

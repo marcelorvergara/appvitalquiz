@@ -30,3 +30,6 @@
       <span>Nenhum paciente cadastrado</span>
     </div>
 </div>
+
+<app-alert-box [isError]="false" [textMessage]="'Solicitação enviada'" *ngIf="sentTest"></app-alert-box>
+<app-alert-box [isError]="true" [textMessage]="'Erro no envio'" *ngIf="sentTestError"></app-alert-box>

@@ -8,15 +8,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './alert-box.component.html',
   styleUrl: './alert-box.component.css',
 })
-export class AlertBoxComponent implements OnInit {
-  @Input() textMessage: string = '';
+export class AlertBoxComponent {
+  @Input() textMessage?: string = '';
   @Input() isError: boolean = false;
 
   onCloseAlert() {
     this.textMessage = '';
-  }
-
-  ngOnInit(): void {
-    console.log(this.isError);
   }
 }
