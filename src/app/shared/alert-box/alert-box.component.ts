@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AlertBoxComponent {
   @Input() textMessage?: string = '';
-  @Input() isError: boolean = false;
+  @Input() isError: boolean | null = false;
 
   onCloseAlert() {
     this.textMessage = '';

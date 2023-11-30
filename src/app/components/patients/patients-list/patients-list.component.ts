@@ -91,21 +91,25 @@ export class PatientsListComponent implements OnInit {
               respData.fields.phone.stringValue,
               respData.fields.contact.stringValue
             )
-            .pipe(map((messageResponse) => ({ respData, messageResponse })))
+            .pipe(
+              map((respMessage) => ({ respData, messageResponse: respMessage }))
+            )
         ),
         catchError((error) => {
           console.error('Error requesting test:', error);
           return of(null); // TODO: improve this error handling
         })
       )
-      .subscribe((respData) => {
-        console.log(respData);
-        if (respData?.messageResponse.errorCode !== null) {
-          console.log('Test requested and message sent:', respData);
+      .subscribe((respMessage) => {
+        console.log(respMessage?.messageResponse.errorCode);
+        if (respMessage?.messageResponse.errorCode !== 'null') {
+          console.log('Test requested and message sent:', respMessage);
           this.sentTest = true;
+          this.sentTestError = false;
         } else {
-          console.error('Error:', respData.messageResponse.errorMessage);
+          console.error('Error:', respMessage);
           this.sentTestError = true;
+          this.sentTest = false;
         }
       });
   }
