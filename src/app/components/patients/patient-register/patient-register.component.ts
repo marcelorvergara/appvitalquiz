@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { DataStorageService } from '../../../shared/data-storage.service';
-import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-alert-box.component';
+import { AlertBoxComponent } from '../../../shared/alert-box/alert-box.component';
 import { ActivatedRoute } from '@angular/router';
 import { PatientsDoc } from '../../../shared/models/patient.model';
 
@@ -16,7 +16,7 @@ import { PatientsDoc } from '../../../shared/models/patient.model';
     CommonModule,
     FormsModule,
     LoadingSpinnerComponent,
-    ErrorAlertBoxComponent,
+    AlertBoxComponent,
   ],
 })
 export class PatientRegisterComponent implements OnInit, OnDestroy {

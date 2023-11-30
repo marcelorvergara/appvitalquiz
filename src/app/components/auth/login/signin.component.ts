@@ -4,7 +4,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-alert-box.component';
+import { AlertBoxComponent } from '../../../shared/alert-box/alert-box.component';
 
 @Component({
   selector: 'app-entrar',
@@ -15,7 +15,7 @@ import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-al
     CommonModule,
     FormsModule,
     LoadingSpinnerComponent,
-    ErrorAlertBoxComponent,
+    AlertBoxComponent,
   ],
 })
 export class SigninComponent {

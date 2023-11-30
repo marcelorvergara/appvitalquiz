@@ -4,7 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-alert-box.component';
+import { AlertBoxComponent } from '../../../shared/alert-box/alert-box.component';
 
 @Component({
   selector: 'app-signup',
@@ -13,7 +13,7 @@ import { ErrorAlertBoxComponent } from '../../../shared/error-alert-box/error-al
     CommonModule,
     FormsModule,
     LoadingSpinnerComponent,
-    ErrorAlertBoxComponent,
+    AlertBoxComponent,
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
